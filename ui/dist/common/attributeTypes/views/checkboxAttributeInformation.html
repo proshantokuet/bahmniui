@@ -1,0 +1,14 @@
+<div class="field-attribute-checkbox">
+    <label for="{{::attribute.name}}">{{::attribute.description}} <span ng-show="isForm">:</span>
+
+        <span class="asterick" ng-show="{{::attribute.required}}">*</span></label>
+</div>
+<div class="field-value-checkbox" data-ng-switch on="::attribute.format">
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid" ng-options="a.conceptId as a.description for a in ::attribute.answers" ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
+            <option value=""></option>
+        </select>
+    </div>
+
+</div>
