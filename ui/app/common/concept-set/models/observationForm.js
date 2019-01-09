@@ -49,7 +49,50 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
     self.isAvailable = function (context) {
         return true;
     };
+    self.formValidation = function (context, conceptSet) {
+        // console.log(context);
+        var dob = new Date(context.patient.birthdate);
+        var today = new Date();
+        var timeDiff = Math.abs(today.getTime() - dob.getTime());
+        var age = Math.ceil(timeDiff / (1000 * 3600 * 24)) - 1;
+        var gender = context.patient.gender;
+        var formName = conceptSet.formName;
+        var deliveryDayDifference = "";
+        if (typeof context.patient.delivery_date !== "undefined") {
+            var deliveryDate = new Date(context.patient.delivery_date.value);
+            var deliveryDateDifference = Math.abs(today.getTime() - deliveryDate.getTime());
+            deliveryDayDifference = Math.ceil(deliveryDateDifference / (1000 * 3600 * 24)) - 1;
+        }
 
+        var maritalStatus = "";
+        if (typeof context.patient.maritialStatus !== "undefined") {
+            maritalStatus = context.patient.maritialStatus.value.uuid;
+        }
+        /* console.log(deliveryDayDifference);
+        console.log(age);
+        console.log(conceptSet); */
+        var diseaseStatus = "";
+        if (typeof context.patient.Disease_status !== "undefined") {
+            diseaseStatus = context.patient.Disease_status.value.uuid;
+        }
+        if (age <= 61 && formName == 'শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা') {
+            return true;
+        } else if (age >= 62 && age <= 1826 && formName == 'শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা') {
+            return true;
+        } else if (diseaseStatus == '4ff3c186-047d-42f3-aa6f-d79c969834ec' && (formName == 'প্রসব পূর্ব সেবা' || formName == 'ডেলিভারি সেবা')) {
+            return true;
+        } else if (deliveryDayDifference <= 61 && diseaseStatus == '898bd550-eb0f-4cc1-92c4-1e0c73453484' && formName == 'প্রসব পরবর্তী সেবা') {
+            return true;
+        } else if (formName == 'সাধারন রোগীর সেবা' || formName == 'গর্ভাবস্থার তথ্য হালনাগাদ') {
+            return true;
+        } else if (gender == 'M' && maritalStatus == 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1' && formName == 'পরিবার পরিকল্পনা') {
+            return true;
+        } else if (gender == 'F' && maritalStatus == 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1' && age <= 18262 && formName == 'পরিবার পরিকল্পনা') {
+            return true;
+        } else {
+            return false;
+        }
+    };
     self.show = function () {
         self.isOpen = true;
         self.isLoaded = true;

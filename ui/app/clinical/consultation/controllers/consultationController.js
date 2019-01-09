@@ -325,7 +325,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
-
+                console.log($scope.patient);
+                console.log(tempConsultation.observations);
                 addFormObservations(tempConsultation);
                 storeTemplatePreference(selectedObsTemplate);
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
