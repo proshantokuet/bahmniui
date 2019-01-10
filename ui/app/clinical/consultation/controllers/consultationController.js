@@ -325,8 +325,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 tempConsultation.observations = observationFilter.filter(tempConsultation.observations);
                 tempConsultation.consultationNote = observationFilter.filter([tempConsultation.consultationNote])[0];
                 tempConsultation.labOrderNote = observationFilter.filter([tempConsultation.labOrderNote])[0];
-                console.log($scope.patient);
-                console.log(tempConsultation.observations);
                 addFormObservations(tempConsultation);
                 storeTemplatePreference(selectedObsTemplate);
                 var visitTypeForRetrospectiveEntries = clinicalAppConfigService.getVisitTypeForRetrospectiveEntries();
@@ -447,6 +445,59 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     encounterData.encounterTypeUuid = results[1].uuid;
                     var params = angular.copy($state.params);
                     params.cachebuster = Math.random();
+                    console.log("encounterData");
+                    console.log(encounterData);
+                    var attributes = [];
+                    var formName = "";
+                    console.log(encounterData.observations);
+                    _.each(encounterData.observations, function (observation) {
+                        var formFieldPath = observation.formFieldPath;
+                        var splitFormName = formFieldPath.split(".");
+                        formName = splitFormName[0];
+                        if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ") {
+                            var attribute = {};
+                            var conceptUuid = observation.concept.uuid;
+                            var attributeType = "";
+                            var diseaseStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
+                            var diseaseStatusAttributeUuid = "94bf1d50-ba51-4db0-9be1-fcb9f7e5b299";
+                            var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
+                            var lmpAttributeUuid = "260a8a1a-42d1-4d10-805a-3c9750afbd7d";
+                            var deliveryDateConceptUuid = "7d5d7073-da00-4a07-8f34-ae299c2c9cb4";
+                            var deliveryDateAttributeUuid = "443763d6-9c53-463b-9b82-518a05c73958";
+                            if (conceptUuid == diseaseStatusConceptUuid) {
+                                attributeType = diseaseStatusAttributeUuid;
+                            } else if (conceptUuid == lmpConceptUuid) {
+                                attributeType = lmpAttributeUuid;
+                            } else if (conceptUuid == deliveryDateConceptUuid) {
+                                attributeType = deliveryDateAttributeUuid;
+                            }
+                            var value = "";
+                            var conceptUuid = observation.concept.uuid;
+                            // গuuid of র্ভাবস্থার ধরন
+                            if (conceptUuid == diseaseStatusConceptUuid) {
+                                value = observation.value.uuid;
+                            } else {
+                                value = observation.value;
+                            }
+                            attribute['value'] = value;
+                            attribute['attributeType'] = attributeType;
+                            attributes.push(attribute);
+                        }
+                    });
+                    var patientInfo = {
+                        person: {
+                            attributes: attributes
+                        }
+                    };
+                    console.log(patientInfo);
+                    console.log($scope.patient);
+                    console.log(formName);
+                    console.log(attributes.length);
+                    if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ") {
+                        console.log("okkkkk");
+                        encounterService.updatePatient(patientInfo, $scope.patient.uuid);
+                    }
+
                     return encounterService.create(encounterData)
                         .then(function (saveResponse) {
                             var messageParams = {encounterUuid: saveResponse.data.encounterUuid, encounterType: saveResponse.data.encounterType};
