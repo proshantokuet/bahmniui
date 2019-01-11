@@ -454,34 +454,60 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         var formFieldPath = observation.formFieldPath;
                         var splitFormName = formFieldPath.split(".");
                         formName = splitFormName[0];
-                        if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ") {
+                        if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ" || formName == "ডেলিভারি সেবা") {
                             var attribute = {};
                             var conceptUuid = observation.concept.uuid;
                             var attributeType = "";
+                            // for 44
+                            /* var diseaseStatusConceptUuid = "e3162bc6-7c67-4620-af44-6d66d6ff664f";
+                            var diseaseStatusAttributeUuid = "d131c367-2487-4a03-a6fc-3102f8fbff24";
+                            var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
+                            var lmpAttributeUuid = "f4732414-9db7-48ca-a806-7b806b59569c";
+                            var deliveryDateConceptUuid = "aaae5d8c-da92-49a2-914e-63d029b3501f";
+                            var deliveryDateTimeConceptUuid = "7150e240-d92d-4f72-9262-ef32d62952c5";
+                            var deliveryDateAttributeUuid = "f8a74ac8-dd11-45cd-a867-58a40b071e7e"; */
+
                             var diseaseStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
                             var diseaseStatusAttributeUuid = "94bf1d50-ba51-4db0-9be1-fcb9f7e5b299";
                             var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
                             var lmpAttributeUuid = "260a8a1a-42d1-4d10-805a-3c9750afbd7d";
                             var deliveryDateConceptUuid = "7d5d7073-da00-4a07-8f34-ae299c2c9cb4";
+                            var deliveryDateTimeConceptUuid = "7150e240-d92d-4f72-9262-ef32d62952c5";
                             var deliveryDateAttributeUuid = "443763d6-9c53-463b-9b82-518a05c73958";
+                            var value = "";
+                            console.log(conceptUuid);
                             if (conceptUuid == diseaseStatusConceptUuid) {
                                 attributeType = diseaseStatusAttributeUuid;
+                                value = observation.value.uuid;
+                                attribute['value'] = value;
+                                attribute['attributeType'] = attributeType;
+                                attributes.push(attribute);
                             } else if (conceptUuid == lmpConceptUuid) {
                                 attributeType = lmpAttributeUuid;
+                                value = observation.value;
+                                attribute['value'] = value;
+                                attribute['attributeType'] = attributeType;
+                                attributes.push(attribute);
                             } else if (conceptUuid == deliveryDateConceptUuid) {
                                 attributeType = deliveryDateAttributeUuid;
-                            }
-                            var value = "";
-                            var conceptUuid = observation.concept.uuid;
-                            // গuuid of র্ভাবস্থার ধরন
-                            if (conceptUuid == diseaseStatusConceptUuid) {
-                                value = observation.value.uuid;
-                            } else {
                                 value = observation.value;
+                                attribute['value'] = value;
+                                attribute['attributeType'] = attributeType;
+                                attributes.push(attribute);
+                            } else if (conceptUuid == deliveryDateTimeConceptUuid) {
+                                attributeType = deliveryDateAttributeUuid;
+                                var valueWithTime = observation.value;
+                                value = valueWithTime.substr(0, 10);
+                                attribute['value'] = "Others_member_disease";
+                                attribute['attributeType'] = diseaseStatusAttributeUuid;
+                                attributes.push(attribute);
+                                var attribute = {};
+                                attribute['value'] = value;
+                                attribute['attributeType'] = attributeType;
+                                attributes.push(attribute);
                             }
-                            attribute['value'] = value;
-                            attribute['attributeType'] = attributeType;
-                            attributes.push(attribute);
+                        } else {
+
                         }
                     });
                     var patientInfo = {
@@ -493,7 +519,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     console.log($scope.patient);
                     console.log(formName);
                     console.log(attributes.length);
-                    if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ") {
+                    if (attributes.length != 0) {
                         console.log("okkkkk");
                         encounterService.updatePatient(patientInfo, $scope.patient.uuid);
                     }
