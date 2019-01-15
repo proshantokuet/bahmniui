@@ -118,7 +118,7 @@ angular.module('bahmni.clinical')
 
             var initializeDefaultTemplates = function () {
                 $scope.consultation.selectedObsTemplate = _.filter($scope.allTemplates, function (template) {
-                    return template.isDefault() || template.alwaysShow;
+                    return true;
                 });
             };
 

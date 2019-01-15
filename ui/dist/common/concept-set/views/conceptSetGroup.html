@@ -9,7 +9,7 @@
         <div class="concept-set-panel-wrap" assign-height key="contentHeight">
             <div class="multi-select-lab-tests">
                 <ul>
-                    <li ng-repeat="conceptSet in allTemplates track by $index" ng-if="conceptSet.isAvailable(context) && (conceptSet.isAdded || conceptSet.alwaysShow)" ng-class="openActiveForm(conceptSet)">
+                    <li ng-repeat="conceptSet in allTemplates track by $index" ng-if="conceptSet.isAvailable(context)  && conceptSet.formValidation(context, conceptSet)" ng-class="openActiveForm(conceptSet)">
                         <a ng-click="showLeftPanelConceptSet(conceptSet)">
                             <span class="concept-set-name" ng-class="{'concept-set-name-extra':conceptSet.isValid === false}">
                                 {{conceptSet.label}}

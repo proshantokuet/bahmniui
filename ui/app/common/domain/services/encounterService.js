@@ -75,18 +75,13 @@ angular.module('bahmni.common.domain')
 
             this.create = function (encounter) {
                 encounter = this.buildEncounter(encounter);
-                var diseaseStatus = "";
-                console.log(encounter.observations);
-                _.each(encounter.observations, function (observation) {
-                    console.log(observation.formFieldPath);
-                    var formFieldPath = observation.formFieldPath;
-                    console.log(observation.concept.uuid);
-                    var splitFormName = formFieldPath.split(".");
-                    console.log(splitFormName[0]);
-                    console.log(observation.valueAsString);
-                });
-
                 return $http.post(Bahmni.Common.Constants.bahmniEncounterUrl, encounter, {
+                    withCredentials: true
+                });
+            };
+            this.updatePatient = function (patient, uuid) {
+                var patientUrl = Bahmni.Common.Constants.PatientUrl + "/" + uuid;
+                return $http.post(patientUrl, patient, {
                     withCredentials: true
                 });
             };

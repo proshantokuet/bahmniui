@@ -214,6 +214,7 @@ Bahmni.Common = Bahmni.Common || {};
         orderTypeUrl: RESTWS_V1 + "/ordertype",
         userUrl: RESTWS_V1 + "/user",
         teamMemberUrl: RESTWS_V1 + "/team/teammember",
+        PatientUrl: RESTWS_V1 + "/patient",
         passwordUrl: RESTWS_V1 + "/password",
         formUrl: RESTWS_V1 + "/form",
         allFormsUrl: RESTWS_V1 + "/bahmniie/form/allForms",

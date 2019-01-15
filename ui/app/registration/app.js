@@ -102,7 +102,7 @@ angular
             var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
             locationService.getVisitLocation(loginLocationUuid).then(function (response) {
                 if (response.data) {
-                    $rootScope.visitLocation = response.data.uuid;
+                    $rootScope.visitLocation = (Bahmni.Common.Constants.locationCookieName).uuid;
                 }
             });
 
