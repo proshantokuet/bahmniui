@@ -454,7 +454,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         var formFieldPath = observation.formFieldPath;
                         var splitFormName = formFieldPath.split(".");
                         formName = splitFormName[0];
-                        if (formName == "গর্ভাবস্থার তথ্য হালনাগাদ" || formName == "ডেলিভারি সেবা") {
+                        if (formName == "গর্ভাবস্থার তথ্য" || formName == "ডেলিভারি সেবা") {
                             var attribute = {};
                             var conceptUuid = observation.concept.uuid;
                             var attributeType = "";
@@ -467,7 +467,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             var deliveryDateTimeConceptUuid = "7150e240-d92d-4f72-9262-ef32d62952c5";
                             var deliveryDateAttributeUuid = "f8a74ac8-dd11-45cd-a867-58a40b071e7e";
 
-                           /* var diseaseStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
+                            /* var diseaseStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
                             var diseaseStatusAttributeUuid = "94bf1d50-ba51-4db0-9be1-fcb9f7e5b299";
                             var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
                             var lmpAttributeUuid = "260a8a1a-42d1-4d10-805a-3c9750afbd7d";

@@ -10,7 +10,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         self.label = formName;
         self.conceptName = formName;
         self.collapseInnerSections = {value: false};
-        self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
+        self.alwaysShow = true;
         self.observations = [];
         _.each(observations, function (observation) {
             var observationFormField = observation.formFieldPath ? (observation.formFieldPath.split("/")[0]).split('.') : null;
@@ -73,7 +73,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
         var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484';
 
-       /* var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
+        /* var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
         var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
         var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484'; */
         /* console.log(deliveryDayDifference);
@@ -95,11 +95,11 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             return true;
         } else if (formName == 'সাধারন রোগীর সেবা' && age >= 1827) {
             return true;
-        } else if (formName == 'গর্ভাবস্থার তথ্য হালনাগাদ' && gender == 'F' && maritalStatus == married) {
+        } else if (formName == 'গর্ভাবস্থার তথ্য' && gender == 'F' && maritalStatus == married) {
             return true;
-        } else if (gender == 'M' && maritalStatus == married && formName == 'পরিবার পরিকল্পনা') {
+        } else if (gender == 'M' && maritalStatus == married && formName == 'পরিবার পরিকল্পনা সেবা') {
             return true;
-        } else if (diseaseStatus != antenatal && gender == 'F' && maritalStatus == married && age <= 18262 && formName == 'পরিবার পরিকল্পনা') {
+        } else if (diseaseStatus != antenatal && gender == 'F' && maritalStatus == married && age <= 18262 && formName == 'পরিবার পরিকল্পনা সেবা') {
             return true;
         } else {
             return false;
@@ -141,7 +141,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
     };
 
     self.isDefault = function () {
-        return false;
+        return true;
     };
 
     Object.defineProperty(self, "isAdded", {

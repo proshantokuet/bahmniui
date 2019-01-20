@@ -118,7 +118,7 @@ angular.module('bahmni.clinical')
 
             var initializeDefaultTemplates = function () {
                 $scope.consultation.selectedObsTemplate = _.filter($scope.allTemplates, function (template) {
-                    return true;
+                    return template.isDefault() || template.alwaysShow;
                 });
             };
 
@@ -136,8 +136,8 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(conceptSetService.getObsTemplatesForProgram($state.params.programUuid).success(function (data) {
                     if (data.results.length > 0 && data.results[0].mappings.length > 0) {
                         _.map(allConceptSections, function (conceptSection) {
-                            conceptSection.isAdded = false;
-                            conceptSection.alwaysShow = false;
+                            conceptSection.isAdded = true;
+                            conceptSection.alwaysShow = true;
                         });
 
                         _.map(data.results[0].mappings, function (template) {

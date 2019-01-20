@@ -120,6 +120,27 @@ angular.module('bahmni.common.patientSearch')
             }
         };
 
+        $scope.validPatient = function (patient) {
+            console.log(patient);
+            console.log(patient.age);
+            if (patient.age == 0) {
+                return false;
+            }
+            return true;
+        };
+        $scope.patientAge = function (patient) {
+            var dob = new Date(patient.birthDate);
+            var today = new Date();
+            var timeDiff = Math.abs(today.getTime() - dob.getTime());
+            var ageAsDay = Math.ceil(timeDiff / (1000 * 3600 * 24)) - 1;
+            console.log(ageAsDay);
+            var year = Math.floor(ageAsDay / 365);
+            var day = ageAsDay % 365;
+            var month = Math.floor(day / 30);
+            var age = year + " years " + month + " months";
+            return age;
+        };
+
         $scope.forwardPatient = function (patient, heading) {
             var options = $.extend({}, $stateParams);
             $rootScope.patientAdmitLocationStatus = patient.Status;
