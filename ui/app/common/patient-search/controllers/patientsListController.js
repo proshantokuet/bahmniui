@@ -121,9 +121,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.validPatient = function (patient) {
-            console.log(patient);
-            console.log(patient.age);
-            if (patient.age == 0) {
+            if (patient.gender == 'H') {
                 return false;
             }
             return true;
@@ -133,7 +131,6 @@ angular.module('bahmni.common.patientSearch')
             var today = new Date();
             var timeDiff = Math.abs(today.getTime() - dob.getTime());
             var ageAsDay = Math.ceil(timeDiff / (1000 * 3600 * 24)) - 1;
-            console.log(ageAsDay);
             var year = Math.floor(ageAsDay / 365);
             var day = ageAsDay % 365;
             var month = Math.floor(day / 30);

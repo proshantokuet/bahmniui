@@ -213,6 +213,17 @@ angular.module('bahmni.registration')
                 if (angular.isUndefined(response)) {
                     return;
                 }
+                /* start by proshanto  */
+                var households = [];
+                var households = response.data.pageOfResults;
+                var i;
+                for (i = 0; i < response.data.pageOfResults.length; i++) {
+                    var patient = response.data.pageOfResults[i];
+                    if (patient.gender != 'H') {
+                        response.data.pageOfResults.splice(i);
+                    }
+                }
+                /* end by proshanto */
                 return response.data.pageOfResults.map(function (patient) {
                     return {
                         value: getName(patient) + " - " + patient.identifier,

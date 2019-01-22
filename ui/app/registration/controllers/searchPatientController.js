@@ -115,6 +115,16 @@ angular.module('bahmni.registration')
                 }
             };
 
+            /* start by proshanto  */
+
+            $scope.validPatient = function (patient) {
+                if (patient.gender == 'H') {
+                    return false;
+                }
+                return true;
+            };
+            /* end by proshanto */
+
             var mapProgramAttributesSearchResults = function (data) {
                 if (($scope.programAttributesSearchConfig.field) && data !== "Searching") {
                     _.map(data.pageOfResults, function (result) {
@@ -265,6 +275,7 @@ angular.module('bahmni.registration')
                     $scope.addressSearchResultsConfig.fields, $scope.personSearchResultsConfig.fields,
                     $scope.isExtraIdentifierConfigured())
                     .then(function (data) {
+                        console.log(data);
                         mapExtraIdentifiers(data);
                         mapCustomAttributesSearchResults(data);
                         mapAddressAttributesSearchResults(data);

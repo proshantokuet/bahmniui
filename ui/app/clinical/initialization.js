@@ -24,7 +24,6 @@ angular.module('bahmni.clinical').factory('initialization',
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
                     });
                 };
-                console.log(appService);
 
                 var checkPrivilege = function () {
                     return appService.checkPrivilege("app:clinical");

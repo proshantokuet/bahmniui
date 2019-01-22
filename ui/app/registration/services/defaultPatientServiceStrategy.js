@@ -11,7 +11,6 @@ angular.module('bahmni.registration')
             if (config && config.params.identifier) {
                 patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene";
             }
-            console.log(patientSearchUrl);
             var onResults = function (result) {
                 defer.resolve(result);
             };
