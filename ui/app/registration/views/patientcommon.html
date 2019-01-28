@@ -237,12 +237,11 @@
         </section>
     </div>
 
-    <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
-         class="additional-info-wrapper">
-        <div ng-if="section.canShow">
-            <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title=='Checkbox example')">
-                <legend class="additional-attribute" toggle="section.expand">
-              <span>
+    <div  class="additional-info-wrapper">
+       <!-- <div ng-if="section.canShow">-->
+           <!-- <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title=='Checkbox example')">
+                <legend class="additional-attribute" toggle="section.expand">-->
+              <!--<span>
                   <i class="fa fa-caret-right"></i>
                   <i class="fa fa-caret-down"></i>
                   <strong>
@@ -261,9 +260,42 @@
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></checkbox-attribute-types>
                     </article>
                 </section>
-            </div>
+-->
+                <div class="box-container form">
+                     <legend class="registraion_legend">
+                         <span class="mylegend">Risky Habits</span>
+                     </legend>
+                    <section class="form-field-inline clearfix">
+                        <article class="form-field" ng-repeat="x in riskyHabits" ng-class="::{'right-form-field' : $index%2 != 0}">
+                            <div class="field-attribute estimated-label">
+                                <label>{{ x }}<br></label>
+                            </div>
+                            <div class="field-value">
+                                <input type="checkbox" ng-model="patient.riskyHabit[x]" ng-checked="riskyHabbitArray.includes(x) == true">
+                            </div>
+                        </article>
+                    </section>
+                </div>
 
-             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title!='Checkbox example')">
+                <div class="box-container form">
+                     <legend class="registraion_legend">
+                         <span class="mylegend">Disease Status</span>
+                     </legend>
+
+                    <section class="form-field-inline clearfix">
+                        <article class="form-field" ng-repeat="x in diseaseStatus" ng-class="::{'right-form-field' : $index%2 != 0}">
+                            <div class="field-attribute estimated-label">
+                                <label>{{ x }}<br></label>
+                            </div>
+                            <div class="field-value">
+                                <input type="checkbox" ng-model="patient.diseaseStatus[x]" ng-checked="diseaseStatusString.includes(x) == true">
+                            </div>
+                        </article>
+                    </section>
+                </div>
+           <!-- </div>-->
+
+            <!-- <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title!='Checkbox example')">
                 <legend class="additional-attribute" toggle="section.expand">
               <span>
                   <i class="fa fa-caret-right"></i>
@@ -284,7 +316,7 @@
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
                 </section>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
@@ -298,7 +330,7 @@
         <div patient-relationship patient="patient" ng-show="patient.hasRelationships"
              ng-if="::relationshipTypes"></div>
     </div>
-    <div class="box-container" ng-if="deathConceptExists">
+    <!--<div class="box-container" ng-if="deathConceptExists">
         <legend class="additional-attribute" toggle="patient.isDead">
           <span>
               <i class="fa fa-caret-right"></i>
@@ -309,5 +341,5 @@
         <section class="form-field-inline form-field-inline-one-col clearfix" ng-show="patient.isDead">
             <ng-include src="'views/patientDeathInformation.html'"></ng-include>
         </section>
-    </div>
+    </div>-->
 </div>

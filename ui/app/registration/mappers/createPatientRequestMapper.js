@@ -49,6 +49,16 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                 uuid: patient.uuid
             }
         };
+        var i = 0;
+        for (i = 0; i < openMRSPatient.patient.person.attributes.length; i++) {
+            if (openMRSPatient.patient.person.attributes[i].attributeType.name == "RiskyHabit") {
+                openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.riskyHabit);
+            }
+            if (openMRSPatient.patient.person.attributes[i].attributeType.name == "Disease_status") {
+                openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.diseaseStatus);
+            }
+        }
+        console.log(openMRSPatient.patient.person.attributes);
 
         this.setImage(patient, openMRSPatient);
         openMRSPatient.relationships = patient.relationships;
@@ -69,6 +79,16 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
             mnt = moment(this.currentDate).subtract('days', age.days).subtract('months', age.months).subtract('years', age.years);
         }
         return mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+    };
+
+    CreatePatientRequestMapper.prototype.getStringFromJsonArray = function (jsonArray) {
+        var jsonArrayList = "";
+        var keys = [];
+        for (var k in jsonArray) {
+            keys.push(k);
+        }
+        jsonArrayList = keys.join();
+        return jsonArrayList;
     };
 
     return CreatePatientRequestMapper;

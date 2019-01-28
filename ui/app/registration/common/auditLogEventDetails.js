@@ -5,5 +5,6 @@ Bahmni.Registration.StateNameEvenTypeMap = {
     "patient.edit": "EDIT_PATIENT_DETAILS",
     "patient.visit": "ACCESSED_REGISTRATION_SECOND_PAGE",
     "patient.view": "VIEWED_PATIENT_DETAILS",
-    "patient.printSticker": "PRINT_PATIENT_STICKER"
+    "patient.printSticker": "PRINT_PATIENT_STICKER",
+    "newchild": "VIEWED_NEW_PATIENT_PAGE"
 };

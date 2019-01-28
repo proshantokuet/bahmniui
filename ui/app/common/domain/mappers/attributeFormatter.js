@@ -8,7 +8,8 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
         return attributeTypes.map(function (result) {
             var attribute = {
                 attributeType: {
-                    uuid: result.uuid
+                    uuid: result.uuid,
+                    name: result.name
                 }
             };
             if (!_.isEmpty(model)) {
@@ -39,7 +40,9 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
     };
 
     var setAttributeValue = function setAttributeValue (attributeType, attr, value) {
-        if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
+        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status") {
+            attr.value = "";
+        } else if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;
         } else if (attributeType.format === "org.openmrs.Concept") {
             var attrDescription = _.find(attributeType.answers, function (answer) {

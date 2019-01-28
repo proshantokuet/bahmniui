@@ -47,6 +47,18 @@ angular
                     }
                 }
             })
+            .state('newchild', {
+                url: '/child/new',
+                views: {
+                    'layout': {templateUrl: 'views/layout.html', controller: 'CreatePatientController'},
+                    'content@newchild': {templateUrl: 'views/newpatient.html'}
+                },
+                resolve: {
+                    initialize: function (initialization) {
+                        return initialization();
+                    }
+                }
+            })
             .state('patient', {
                 url: '/patient/:patientUuid',
                 abstract: true,

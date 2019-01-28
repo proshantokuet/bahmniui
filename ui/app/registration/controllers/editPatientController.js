@@ -26,6 +26,17 @@ angular.module('bahmni.registration')
 
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
+                var i;
+                $scope.riskyHabbitArray = "";
+                $scope.diseaseStatusString = "";
+                for (i = 0; i < $scope.openMRSPatient.person.attributes.length; i++) {
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "RiskyHabit") {
+                        $scope.riskyHabbitArray = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Disease_status") {
+                        $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                }
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 setReadOnlyFields();
                 expandDataFilledSections();

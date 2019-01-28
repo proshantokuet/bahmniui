@@ -22,6 +22,40 @@ angular.module('bahmni.registration')
 
             var isHref = false;
 
+            $scope.riskyHabits = [
+                "Cigarette",
+                "Tobacco / White Leaf",
+                "Others (Tobacco)",
+                "Drug Addiction",
+                "Obesity",
+                "High Salt Intake"
+            ];
+
+            $scope.diseaseStatus = [
+                "উচ্চ রক্তচাপ",
+                "ডায়াবেটিস",
+                "খুব মারাত্বক রোগ",
+                "নিউমোনিয়া",
+                "কাশি/সর্দি",
+                "ডায়ারিয়া ও আমাশয়",
+                "জ্বর",
+                "হাম",
+                "নাভিতে সংক্রামন",
+                "চোখ উঠা",
+                "আঘাত",
+                "প্রসব পূর্ব",
+                "প্রসবোত্তর",
+                "কানের সমস্যা",
+                "জ্বর (ম্যালারিয়া)",
+                "যক্ষ্মা",
+                "জন্ডিস",
+                "সম্ভাব্য সীমিত সংক্রামণ",
+                "পানি স্বল্পতাহীন ডায়রিয়া",
+                "অপুষ্টি",
+                "রক্ত স্বল্পতা",
+                "অন্যান্য অসুখ"
+            ];
+
             $rootScope.onHomeNavigate = function (event) {
                 if ($scope.showSaveConfirmDialogConfig && $state.current.name != "patient.visit") {
                     event.preventDefault();
