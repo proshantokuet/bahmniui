@@ -40,8 +40,36 @@ angular.module('bahmni.registration')
                 newlyAddedRelationships: [{}],
                 deletedRelationships: [],
                 calculateBirthDate: calculateBirthDate,
-                riskyHabit: {},
-                diseaseStatus: {}
+                riskyHabit: {
+                    "Cigarette": false,
+                    "Tobacco / White Leaf": false,
+                    "Others (Tobacco)": false,
+                    "Drug Addiction": false,
+                    "Obesity": false,
+                    "High Salt Intake": false
+                },
+                diseaseStatus: {
+                    "High Blood Pressure": false,
+                    "Diabetes": false,
+                    "Very severe disease": false,
+                    "Pneumonia": false,
+                    "Pneumonia unspec": false,
+                    "dieria and dysentry": false,
+                    "Fever": false,
+                    "Measles": false,
+                    "Bellybutton Infection": false,
+                    "Conjunctivitis unspec": false,
+                    "Injury": false,
+                    "Hearing loss, unspec": false,
+                    "maleria": false,
+                    "Tuberculosis": false,
+                    "Jaundice": false,
+                    "Probable Limited Infection": false,
+                    "Diarrhoea No Dehydration": false,
+                    "Malnutrition": false,
+                    "Anemia": false,
+                    "Others member disease": false
+                }
             };
             return _.assign(patient, identifierDetails);
         };

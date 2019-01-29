@@ -49,16 +49,24 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                 uuid: patient.uuid
             }
         };
+
         var i = 0;
         for (i = 0; i < openMRSPatient.patient.person.attributes.length; i++) {
             if (openMRSPatient.patient.person.attributes[i].attributeType.name == "RiskyHabit") {
-                openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.riskyHabit);
+                if (this.getStringFromJsonArray(patient.riskyHabit)) {
+                    openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.riskyHabit);
+                } else {
+                    openMRSPatient.patient.person.attributes[i].voided = true;
+                }
             }
             if (openMRSPatient.patient.person.attributes[i].attributeType.name == "Disease_status") {
-                openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.diseaseStatus);
+                if (this.getStringFromJsonArray(patient.diseaseStatus)) {
+                    openMRSPatient.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.diseaseStatus);
+                } else {
+                    openMRSPatient.patient.person.attributes[i].voided = true;
+                }
             }
         }
-        console.log(openMRSPatient.patient.person.attributes);
 
         this.setImage(patient, openMRSPatient);
         openMRSPatient.relationships = patient.relationships;
@@ -85,7 +93,9 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         var jsonArrayList = "";
         var keys = [];
         for (var k in jsonArray) {
-            keys.push(k);
+            if (jsonArray[k] == true) {
+                keys.push(k);
+            }
         }
         jsonArrayList = keys.join();
         return jsonArrayList;

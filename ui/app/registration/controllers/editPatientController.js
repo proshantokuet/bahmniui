@@ -37,6 +37,32 @@ angular.module('bahmni.registration')
                         $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
                     }
                 }
+                var i;
+                $scope.riskyHabbitArray = "";
+                $scope.diseaseStatusString = "";
+                for (i = 0; i < $scope.openMRSPatient.person.attributes.length; i++) {
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "RiskyHabit") {
+                        $scope.riskyHabbitArray = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Disease_status") {
+                        $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                }
+
+                $scope.patient = openmrsPatientMapper.map(openmrsPatient);
+
+                var riskyArray = $scope.riskyHabbitArray.split(',');
+                for (i = 0; i < riskyArray.length; i++) {
+                    var a = riskyArray[i];
+                    $scope.patient.riskyHabit[a] = true;
+                }
+                var diseaseStatusArray = $scope.diseaseStatusString.split(',');
+                for (i = 0; i < diseaseStatusArray.length; i++) {
+                    var a = diseaseStatusArray[i];
+                    $scope.patient.diseaseStatus[a] = true;
+                }
+                console.log($scope.patient);
+
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 setReadOnlyFields();
                 expandDataFilledSections();

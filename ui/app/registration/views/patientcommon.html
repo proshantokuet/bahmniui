@@ -263,15 +263,15 @@
 -->
                 <div class="box-container form">
                      <legend class="registraion_legend">
-                         <span class="mylegend">Risky Habits</span>
+                         <span class="mylegend">ঝুকিপূর্ন অভ্যাস</span>
                      </legend>
                     <section class="form-field-inline clearfix">
-                        <article class="form-field" ng-repeat="x in riskyHabits" ng-class="::{'right-form-field' : $index%2 != 0}">
+                       <article class="form-field" ng-repeat="x in riskyHabits" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
                                 <label>{{ x }}<br></label>
                             </div>
                             <div class="field-value">
-                                <input type="checkbox" ng-model="patient.riskyHabit[x]" ng-checked="riskyHabbitArray.includes(x) == true">
+                                <input type="checkbox" ng-model="patient.riskyHabit[x]" ng-change="updateRiskyHabitCheckboxChange(x, patient.riskyHabit[x])" ng-checked="riskyHabbitArray.includes(x) == true">
                             </div>
                         </article>
                     </section>
@@ -279,7 +279,7 @@
 
                 <div class="box-container form">
                      <legend class="registraion_legend">
-                         <span class="mylegend">Disease Status</span>
+                         <span class="mylegend">রোগ</span>
                      </legend>
 
                     <section class="form-field-inline clearfix">
@@ -288,7 +288,7 @@
                                 <label>{{ x }}<br></label>
                             </div>
                             <div class="field-value">
-                                <input type="checkbox" ng-model="patient.diseaseStatus[x]" ng-checked="diseaseStatusString.includes(x) == true">
+                                <input type="checkbox" ng-model="patient.diseaseStatus[x]" ng-change="updateDiseaseStatusCheckboxChange(x, patient.diseaseStatus[x])" ng-checked="diseaseStatusString.includes(x) == true">
                             </div>
                         </article>
                     </section>

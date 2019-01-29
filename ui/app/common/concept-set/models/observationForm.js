@@ -73,7 +73,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
         var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484';
 
-        /* var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
+       /* var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
         var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
         var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484'; */
         /* console.log(deliveryDayDifference);
@@ -81,17 +81,17 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         console.log(conceptSet); */
         console.log(context.patient);
         console.log(conceptSet);
-        var diseaseStatus = "";
-        if (typeof context.patient.Disease_status !== "undefined") {
-            diseaseStatus = context.patient.Disease_status.value.uuid;
+        var pregnancyStatus = "";
+        if (typeof context.patient.PregnancyStatus !== "undefined") {
+            pregnancyStatus = context.patient.PregnancyStatus.value.uuid;
         }
         if (age <= 61 && formName == 'শিশু (০ থেকে ২ মাস) স্বাস্থ্য সেবা') {
             return true;
         } else if (age >= 62 && age <= 1826 && formName == 'শিশু (২ মাস থেকে ৫ বছর) স্বাস্থ্য সেবা') {
             return true;
-        } else if (diseaseStatus == antenatal && (formName == 'প্রসব পূর্ব সেবা' || formName == 'ডেলিভারি সেবা')) {
+        } else if (pregnancyStatus == antenatal && (formName == 'প্রসব পূর্ব সেবা' || formName == 'ডেলিভারি সেবা')) {
             return true;
-        } else if (deliveryDayDifference <= 61 && diseaseStatus == postnatal && formName == 'প্রসব পরবর্তী সেবা') {
+        } else if (deliveryDayDifference <= 61 && pregnancyStatus == postnatal && formName == 'প্রসব পরবর্তী সেবা') {
             return true;
         } else if (formName == 'সাধারন রোগীর সেবা' && age >= 1827) {
             return true;
@@ -99,7 +99,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             return true;
         } else if (gender == 'M' && maritalStatus == married && formName == 'পরিবার পরিকল্পনা সেবা') {
             return true;
-        } else if (diseaseStatus != antenatal && gender == 'F' && maritalStatus == married && age <= 18262 && formName == 'পরিবার পরিকল্পনা সেবা') {
+        } else if (pregnancyStatus != antenatal && gender == 'F' && maritalStatus == married && age <= 18262 && formName == 'পরিবার পরিকল্পনা সেবা') {
             return true;
         } else {
             return false;

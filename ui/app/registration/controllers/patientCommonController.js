@@ -18,10 +18,6 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
 
-            var dontSaveButtonClicked = false;
-
-            var isHref = false;
-
             $scope.riskyHabits = [
                 "Cigarette",
                 "Tobacco / White Leaf",
@@ -32,29 +28,39 @@ angular.module('bahmni.registration')
             ];
 
             $scope.diseaseStatus = [
-                "উচ্চ রক্তচাপ",
-                "ডায়াবেটিস",
-                "খুব মারাত্বক রোগ",
-                "নিউমোনিয়া",
-                "কাশি/সর্দি",
-                "ডায়ারিয়া ও আমাশয়",
-                "জ্বর",
-                "হাম",
-                "নাভিতে সংক্রামন",
-                "চোখ উঠা",
-                "আঘাত",
-                "প্রসব পূর্ব",
-                "প্রসবোত্তর",
-                "কানের সমস্যা",
-                "জ্বর (ম্যালারিয়া)",
-                "যক্ষ্মা",
-                "জন্ডিস",
-                "সম্ভাব্য সীমিত সংক্রামণ",
-                "পানি স্বল্পতাহীন ডায়রিয়া",
-                "অপুষ্টি",
-                "রক্ত স্বল্পতা",
-                "অন্যান্য অসুখ"
+                "High Blood Pressure",
+                "Diabetes",
+                "Very severe disease",
+                "Pneumonia",
+                "Pneumonia unspec",
+                "dieria and dysentry",
+                "Fever",
+                "Measles",
+                "Bellybutton Infection",
+                "Conjunctivitis unspec",
+                "Injury",
+                "Hearing loss unspec",
+                "maleria",
+                "Tuberculosis",
+                "Jaundice",
+                "Probable Limited Infection",
+                "Diarrhoea No Dehydration",
+                "Malnutrition",
+                "Anemia",
+                "Others member disease"
             ];
+
+            var dontSaveButtonClicked = false;
+
+            var isHref = false;
+
+            $scope.updateRiskyHabitCheckboxChange = function (risky, isChecked) {
+                $scope.patient.riskyHabit[risky] = isChecked;
+            };
+
+            $scope.updateDiseaseStatusCheckboxChange = function (disease, isChecked) {
+                $scope.patient.diseaseStatus[disease] = isChecked;
+            };
 
             $rootScope.onHomeNavigate = function (event) {
                 if ($scope.showSaveConfirmDialogConfig && $state.current.name != "patient.visit") {
@@ -221,6 +227,10 @@ angular.module('bahmni.registration')
 
             $scope.disableIsDead = function () {
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
+            };
+
+            $scope.getRiskyHabitArray = function (data) {
+                return data.results;
             };
         }]);
 
