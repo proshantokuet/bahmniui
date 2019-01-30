@@ -186,3 +186,4 @@ angular.module('bahmni.registration')
             };
         }
     ]);
+
