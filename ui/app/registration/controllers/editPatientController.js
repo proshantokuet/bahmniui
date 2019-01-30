@@ -30,12 +30,16 @@ angular.module('bahmni.registration')
                 var i;
                 $scope.riskyHabbitArray = "";
                 $scope.diseaseStatusString = "";
+                $scope.familyDiseaseHistoryString = "";
                 for (i = 0; i < $scope.openMRSPatient.person.attributes.length; i++) {
                     if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "RiskyHabit") {
                         $scope.riskyHabbitArray = $scope.openMRSPatient.person.attributes[i].value;
                     }
                     if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Disease_status") {
                         $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Family Disease History") {
+                        $scope.familyDiseaseHistoryString = $scope.openMRSPatient.person.attributes[i].value;
                     }
                 }
 
@@ -50,6 +54,11 @@ angular.module('bahmni.registration')
                 for (i = 0; i < diseaseStatusArray.length; i++) {
                     var a = diseaseStatusArray[i];
                     $scope.patient.diseaseStatus[a] = true;
+                }
+                var familyDiseaseHistoryArray = $scope.familyDiseaseHistoryString.split(',');
+                for (i = 0; i < familyDiseaseHistoryArray.length; i++) {
+                    var a = familyDiseaseHistoryArray[i];
+                    $scope.patient.familyDiseaseHistory[a] = true;
                 }
                 console.log($scope.patient);
 

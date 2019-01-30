@@ -65,6 +65,13 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     openMRSPatientProfile.patient.person.attributes[i].voided = true;
                 }
             }
+            if (openMRSPatientProfile.patient.person.attributes[i].attributeType.name == "Family Disease History") {
+                if (this.getStringFromJsonArray(patient.familyDiseaseHistory)) {
+                    openMRSPatientProfile.patient.person.attributes[i].value = this.getStringFromJsonArray(patient.familyDiseaseHistory);
+                } else {
+                    openMRSPatientProfile.patient.person.attributes[i].voided = true;
+                }
+            }
         }
 
         this.setImage(patient, openMRSPatientProfile);
@@ -107,7 +114,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     };
 
     var setAttributeValue = function (attributeType, attr, value) {
-        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status") {
+        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status" || attributeType.name == "Family Disease History") {
             attr.value = "";
         } else if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;

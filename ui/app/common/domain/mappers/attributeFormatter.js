@@ -40,7 +40,7 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
     };
 
     var setAttributeValue = function setAttributeValue (attributeType, attr, value) {
-        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status") {
+        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status" || attributeType.name == "Family Disease History") {
             attr.value = "";
         } else if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;

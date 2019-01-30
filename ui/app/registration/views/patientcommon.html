@@ -268,10 +268,10 @@
                     <section class="form-field-inline clearfix">
                        <article class="form-field" ng-repeat="x in riskyHabits" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
-                                <label>{{ x }}<br></label>
+                                <label>{{ x.benName }}<br></label>
                             </div>
                             <div class="field-value">
-                                <input type="checkbox" ng-model="patient.riskyHabit[x]" ng-change="updateRiskyHabitCheckboxChange(x, patient.riskyHabit[x])">
+                                <input type="checkbox" ng-model="patient.riskyHabit[x.engName]" ng-change="updateRiskyHabitCheckboxChange(x, patient.riskyHabit[x])">
                             </div>
                         </article>
                     </section>
@@ -286,10 +286,27 @@
                     <section class="form-field-inline clearfix">
                         <article class="form-field" ng-repeat="x in diseaseStatus" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
-                                <label>{{ x }}<br></label>
+                                <label>{{ x.benName }}<br></label>
                             </div>
                             <div class="field-value">
-                                <input type="checkbox" ng-model="patient.diseaseStatus[x]" ng-change="updateDiseaseStatusCheckboxChange(x, patient.diseaseStatus[x])">
+                                <input type="checkbox" ng-model="patient.diseaseStatus[x.engName]" ng-change="updateDiseaseStatusCheckboxChange(x, patient.diseaseStatus[x])">
+                            </div>
+                        </article>
+                    </section>
+                </div>
+
+                <div class="box-container form">
+                     <legend class="registraion_legend">
+                         <span class="mylegend">রোগ সম্পর্কিত পারিবারিক তথ্য</span>
+                     </legend>
+
+                    <section class="form-field-inline clearfix">
+                        <article class="form-field" ng-repeat="x in familyDiseaseHistory" ng-class="::{'right-form-field' : $index%2 != 0}">
+                            <div class="field-attribute estimated-label">
+                                <label>{{ x.benName }}<br></label>
+                            </div>
+                            <div class="field-value">
+                                <input type="checkbox" ng-model="patient.familyDiseaseHistory[x.engName]" ng-change="updatefamilyDiseaseHistoryCheckboxChange(x, patient.familyDiseaseHistory[x])">
                             </div>
                         </article>
                     </section>

@@ -19,35 +19,45 @@ angular.module('bahmni.registration')
             $scope.showSaveAndContinueButton = false;
 
             $scope.riskyHabits = [
-                "Cigarette",
-                "Tobacco / White Leaf",
-                "Others (Tobacco)",
-                "Drug Addiction",
-                "Obesity",
-                "High Salt Intake"
+                { engName: "Cigarette", benName: "বিড়ি/সিগারেট" },
+                { engName: "Tobacco / White Leaf", benName: "তামাক/সাদা পাতা" },
+                { engName: "Others (Tobacco)", benName: "অন্যান্য তামাক" },
+                { engName: "Drug Addiction", benName: "মাদকাসক্ত" },
+                { engName: "Obesity", benName: "স্থুলকায়" },
+                { engName: "High Salt Intake", benName: "অতিরিক্ত লবন" }
             ];
 
             $scope.diseaseStatus = [
-                "High Blood Pressure",
-                "Diabetes",
-                "Very severe disease",
-                "Pneumonia",
-                "Pneumonia unspec",
-                "dieria and dysentry",
-                "Fever",
-                "Measles",
-                "Bellybutton Infection",
-                "Conjunctivitis unspec",
-                "Injury",
-                "Hearing loss unspec",
-                "maleria",
-                "Tuberculosis",
-                "Jaundice",
-                "Probable Limited Infection",
-                "Diarrhoea No Dehydration",
-                "Malnutrition",
-                "Anemia",
-                "Others member disease"
+                { engName: "High Blood Pressure", benName: "উচ্চ রক্তচাপ" },
+                { engName: "Diabetes", benName: "ডায়াবেটিস" },
+                { engName: "Very severe disease", benName: "খুব মারাত্বক রোগ" },
+                { engName: "Pneumonia", benName: "নিউমোনিয়া" },
+                { engName: "Pneumonia unspec", benName: "কাশি/সর্দি" },
+                { engName: "dieria and dysentry", benName: "ডায়ারিয়া ও আমাশয়" },
+                { engName: "Fever", benName: "জ্বর" },
+                { engName: "Measles", benName: "হাম" },
+                { engName: "Bellybutton Infection", benName: "নাভিতে সংক্রামন" },
+                { engName: "Conjunctivitis unspec", benName: "চোখ উঠা" },
+                { engName: "Injury", benName: "আঘাত" },
+                { engName: "Hearing loss unspec", benName: "কানের সমস্যা" },
+                { engName: "maleria", benName: "জ্বর (ম্যালারিয়া)" },
+                { engName: "Tuberculosis", benName: "যক্ষ্মা" },
+                { engName: "Jaundice", benName: "জন্ডিস" },
+                { engName: "Probable Limited Infection", benName: "সম্ভাব্য সীমিত সংক্রামণ" },
+                { engName: "Diarrhoea No Dehydration", benName: "পানি স্বল্পতাহীন ডায়রিয়া" },
+                { engName: "Malnutrition", benName: "অপুষ্টি" },
+                { engName: "Anemia", benName: "রক্ত স্বল্পতা" },
+                { engName: "Others member disease", benName: "অন্যান্য অসুখ" }
+            ];
+
+            $scope.familyDiseaseHistory = [
+                { engName: "High Blood Pressure", benName: "উচ্চ রক্তচাপ" },
+                { engName: "Diabetes", benName: "ডায়াবেটিস" },
+                { engName: "Tuberculosis", benName: "যক্ষ্মা" },
+                { engName: "Disability", benName: "প্রতিবন্ধিতা" },
+                { engName: "Psychological Disease", benName: "মানসিক অসুখ" },
+                { engName: "Respiratory Disease", benName: "হৃদরোগ" },
+                { engName: "Others (Family Disease)", benName: "অন্যান্য" }
             ];
 
             var dontSaveButtonClicked = false;
@@ -60,6 +70,10 @@ angular.module('bahmni.registration')
 
             $scope.updateDiseaseStatusCheckboxChange = function (disease, isChecked) {
                 $scope.patient.diseaseStatus[disease] = isChecked;
+            };
+
+            $scope.updatefamilyDiseaseHistoryCheckboxChange = function (disease, isChecked) {
+                $scope.patient.familyDiseaseHistory[disease] = isChecked;
             };
 
             $rootScope.onHomeNavigate = function (event) {

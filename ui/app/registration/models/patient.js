@@ -69,6 +69,15 @@ angular.module('bahmni.registration')
                     "Malnutrition": false,
                     "Anemia": false,
                     "Others member disease": false
+                },
+                familyDiseaseHistory: {
+                    "High Blood Pressure": false,
+                    "Diabetes": false,
+                    "Tuberculosis": false,
+                    "Disability": false,
+                    "Psychological Disease": false,
+                    "Respiratory Disease": false,
+                    "Others (Family Disease)": false
                 }
             };
             return _.assign(patient, identifierDetails);
