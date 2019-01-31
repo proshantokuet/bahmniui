@@ -100,6 +100,55 @@ section.form-field-inline{
   }
 }
 
+section.form-field-inline-checkbox{
+  @include clearfix();
+  @media (max-width : 768px){
+    margin-bottom: 0;
+  }
+  .mylegend{
+    &.registraion_Basic_info{
+      width: auto;
+    }
+  }
+  article{
+    &.form-field{
+      .field-attribute{
+        label{
+          width: 17em;
+          @media (max-width : 990px) {
+            text-align: left;
+          }
+          @media (max-width : 768px) {
+            text-align: right;
+          }
+          @media (max-width : 580px) {
+            text-align: left;
+          }
+        }
+      }
+    }
+    @include columnCheckbox(6);
+    @media (max-width : 768px){
+      @include column(12);
+    }
+  }
+  &.form-field-inline-one-col{
+    article{
+      @include column(12);
+      &.form-field{
+        .field-attribute{
+          label{
+            width: auto;
+            @media (max-width : 768px){
+              width: 17em;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .mylegend {
   background: $lightestGray;
   line-height: 16px;

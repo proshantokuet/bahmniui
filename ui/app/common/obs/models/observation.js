@@ -68,7 +68,7 @@ Bahmni.Common.Obs.Observation = (function () {
             }
 
             value = this.value;
-            var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
+            var displayValue = value && (value.name || (value.shortName && (value.name.name || value.name)) || value);
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }

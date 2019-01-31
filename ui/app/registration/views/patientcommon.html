@@ -265,7 +265,7 @@
                      <legend class="registraion_legend">
                          <span class="mylegend">ঝুকিপূর্ন অভ্যাস</span>
                      </legend>
-                    <section class="form-field-inline clearfix">
+                    <section class="form-field-inline-checkbox clearfix">
                        <article class="form-field" ng-repeat="x in riskyHabits" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
                                 <label>{{ x.benName }}<br></label>
@@ -283,7 +283,7 @@
                          <span class="mylegend">রোগ</span>
                      </legend>
 
-                    <section class="form-field-inline clearfix">
+                    <section class="form-field-inline-checkbox clearfix">
                         <article class="form-field" ng-repeat="x in diseaseStatus" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
                                 <label>{{ x.benName }}<br></label>
@@ -297,10 +297,10 @@
 
                 <div class="box-container form">
                      <legend class="registraion_legend">
-                         <span class="mylegend">রোগ সম্পর্কিত পারিবারিক তথ্য</span>
+                         <span class="mylegend">পারিবারিক রোগ সম্পর্কিত  তথ্য</span>
                      </legend>
 
-                    <section class="form-field-inline clearfix">
+                    <section class="form-field-inline-checkbox clearfix">
                         <article class="form-field" ng-repeat="x in familyDiseaseHistory" ng-class="::{'right-form-field' : $index%2 != 0}">
                             <div class="field-attribute estimated-label">
                                 <label>{{ x.benName }}<br></label>

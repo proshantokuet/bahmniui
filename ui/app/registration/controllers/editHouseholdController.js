@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
+    .controller('EditHouseholdController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
         '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService',
         function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
                   appService, messagingService, $rootScope, auditLogService) {
@@ -26,11 +26,9 @@ angular.module('bahmni.registration')
 
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
-
                 var i;
                 $scope.riskyHabbitArray = "";
                 $scope.diseaseStatusString = "";
-                $scope.familyDiseaseHistoryString = "";
                 for (i = 0; i < $scope.openMRSPatient.person.attributes.length; i++) {
                     if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "RiskyHabit") {
                         $scope.riskyHabbitArray = $scope.openMRSPatient.person.attributes[i].value;
@@ -38,8 +36,16 @@ angular.module('bahmni.registration')
                     if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Disease_status") {
                         $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
                     }
-                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "family_diseases_details") {
-                        $scope.familyDiseaseHistoryString = $scope.openMRSPatient.person.attributes[i].value;
+                }
+                var i;
+                $scope.riskyHabbitArray = "";
+                $scope.diseaseStatusString = "";
+                for (i = 0; i < $scope.openMRSPatient.person.attributes.length; i++) {
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "RiskyHabit") {
+                        $scope.riskyHabbitArray = $scope.openMRSPatient.person.attributes[i].value;
+                    }
+                    if ($scope.openMRSPatient.person.attributes[i].attributeType.display == "Disease_status") {
+                        $scope.diseaseStatusString = $scope.openMRSPatient.person.attributes[i].value;
                     }
                 }
 
@@ -55,13 +61,9 @@ angular.module('bahmni.registration')
                     var a = diseaseStatusArray[i];
                     $scope.patient.diseaseStatus[a] = true;
                 }
-                var familyDiseaseHistoryArray = $scope.familyDiseaseHistoryString.split(',');
-                for (i = 0; i < familyDiseaseHistoryArray.length; i++) {
-                    var a = familyDiseaseHistoryArray[i];
-                    $scope.patient.familyDiseaseHistory[a] = true;
-                }
                 console.log($scope.patient);
 
+                $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 setReadOnlyFields();
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
@@ -78,6 +80,7 @@ angular.module('bahmni.registration')
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
+
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.then(function (data) {
                     var encountersWithObservations = data.data.results.filter(function (encounter) {

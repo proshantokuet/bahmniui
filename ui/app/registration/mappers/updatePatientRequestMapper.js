@@ -114,7 +114,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     };
 
     var setAttributeValue = function (attributeType, attr, value) {
-        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status" || attributeType.name == "Family Disease History") {
+        if (attributeType.name == "RiskyHabit" || attributeType.name == "Disease_status" || attributeType.name == "family_diseases_details") {
             attr.value = "";
         } else if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;
