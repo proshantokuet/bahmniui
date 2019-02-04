@@ -5,6 +5,7 @@ var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
 
 Bahmni.Registration.Constants = {
     openmrsUrl: hostUrl + "/openmrs",
+    opensrpUrl: "https://crossorigin.me/http://192.168.22.152:8080/opensrp/",
     registrationEncounterType: "REG",
     baseOpenMRSRESTURL: RESTWS_V1,
     patientImageUrlByPatientUuid: RESTWS_V1 + "/patientImage?patientUuid=",

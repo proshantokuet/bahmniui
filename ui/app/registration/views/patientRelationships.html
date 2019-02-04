@@ -67,7 +67,7 @@
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
                 </div>
-                <div class="col col3 form-field">
+               <!-- <div class="col col3 form-field">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
                     <div class="field-attribute showOn-small-screen">
                         <label>Till Date</label>
@@ -75,7 +75,7 @@
                     <div class="field-value">
                         <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid"/>
                     </div>
-                </div>
+                </div>-->
                 <div class="col col4">
                     <button type="button" class="small-btn row-remover" ng-if="!isEmpty(newRelationship)" ng-click="removeRelationship(newRelationship, $index)">
                         <span class="fa fa-remove"></span>

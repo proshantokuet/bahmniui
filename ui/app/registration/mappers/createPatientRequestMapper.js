@@ -13,10 +13,10 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         });
         identifiers = _.map(identifiers, function (identifier) {
             return {
-                identifier: identifier.identifier,
-                identifierSourceUuid: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.uuid : undefined,
-                identifierPrefix: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix : undefined,
-                identifierType: identifier.identifierType.uuid,
+                identifier: "",
+                // identifierSourceUuid: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.uuid : undefined,
+                // identifierPrefix: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix : undefined,
+                identifierType: "health_id",
                 preferred: identifier.preferred,
                 voided: identifier.voided
             };
