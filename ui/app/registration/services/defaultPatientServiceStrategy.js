@@ -37,8 +37,20 @@ angular.module('bahmni.registration')
         };
 
         var create = function (patient, jumpAccepted) {
-            healthId();
+            var healthIds = [];
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
+            healthIds = data.patient.identifiers;
+            var i = 0;
+            console.log("okkkoooooooo....:");
+            console.log(healthId());
+            healthId().then(function (response) {
+                console.log("okkk....:");
+                console.log(response);
+                data.patient.identifiers[0].identifier = response;
+            });
+            var healthIdobject = {};
+            // data.patient.identifiers[0].identifier = healthId();
+            // data.patient.identifiers = healthIdobject;
             console.log(data);
             var url = baseOpenMRSRESTURL + "/bahmnicore/patientprofile";
             return $http.post(url, data, {
@@ -74,15 +86,16 @@ angular.module('bahmni.registration')
         };
 
         var healthId = function () {
-            var url = openmrSRPURL;
+            var url = openmrsUrl + "/ws/rest/v1/healthid/reserved";
             var config = {
                 method: "GET",
                 withCredentials: false
             };
+            var defer = $q.defer();
             $http.get(url, config).success(function (result) {
-                console.log(result);
-                return result.identifiers;
+                defer.resolve(result.identifiers);
             });
+            return defer.promise;
         };
 
         return {
