@@ -37,25 +37,15 @@ angular.module('bahmni.registration')
         };
 
         var create = function (patient, jumpAccepted) {
-            var healthIds = [];
             var data = new Bahmni.Registration.CreatePatientRequestMapper(moment()).mapFromPatient($rootScope.patientConfiguration.attributeTypes, patient);
-            healthIds = data.patient.identifiers;
-            var i = 0;
-            console.log("okkkoooooooo....:");
-            console.log(healthId());
-            healthId().then(function (response) {
-                console.log("okkk....:");
-                console.log(response);
-                data.patient.identifiers[0].identifier = response;
-            });
-            var healthIdobject = {};
-            // data.patient.identifiers[0].identifier = healthId();
-            // data.patient.identifiers = healthIdobject;
-            console.log(data);
             var url = baseOpenMRSRESTURL + "/bahmnicore/patientprofile";
-            return $http.post(url, data, {
-                withCredentials: true,
-                headers: {"Accept": "application/json", "Content-Type": "application/json", "Jump-Accepted": jumpAccepted}
+            return healthId().then(function (response) {
+                var memberHealthId = response.identifiers;
+                data.patient.identifiers[0].identifier = memberHealthId;
+                return $http.post(url, data, {
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json", "Jump-Accepted": jumpAccepted}
+                });
             });
         };
 
@@ -86,14 +76,14 @@ angular.module('bahmni.registration')
         };
 
         var healthId = function () {
-            var url = openmrsUrl + "/ws/rest/v1/healthid/reserved";
+            var url = openmrsUrl + "/ws/rest/v1/healthid/reserved/singleid";
             var config = {
                 method: "GET",
                 withCredentials: false
             };
             var defer = $q.defer();
             $http.get(url, config).success(function (result) {
-                defer.resolve(result.identifiers);
+                defer.resolve(result);
             });
             return defer.promise;
         };
@@ -103,7 +93,6 @@ angular.module('bahmni.registration')
             get: getByUuid,
             create: create,
             update: update,
-            generateIdentifier: generateIdentifier,
-            healthId: healthId
+            generateIdentifier: generateIdentifier
         };
     }]);

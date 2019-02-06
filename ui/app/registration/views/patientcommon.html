@@ -150,8 +150,8 @@
             <span class="mylegend">{{ ::'REGISTRATION_ADDTIONAL_IDENTIFIERS' | translate}}</span>
         </legend>
 
-        <section>
-            <!--edit patient flow-->
+       <!-- <section>
+            &lt;!&ndash;edit patient flow&ndash;&gt;
            <section>
                 <div ng-if="patient.uuid != undefined">
                     <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
@@ -220,7 +220,7 @@
                     </article>
                 </div>
            </section>
-        </section>
+        </section>-->
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
             <span class="mylegend">{{ ::'REGISTRATION_LABEL_OTHER_INFO' | translate}}</span>

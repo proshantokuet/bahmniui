@@ -13,10 +13,10 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         });
         identifiers = _.map(identifiers, function (identifier) {
             return {
-                identifier: "",
-                // identifierSourceUuid: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.uuid : undefined,
-                // identifierPrefix: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix : undefined,
-                identifierType: "health_id",
+                identifier: identifier,
+                identifierSourceUuid: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.uuid : undefined,
+                identifierPrefix: identifier.selectedIdentifierSource ? identifier.selectedIdentifierSource.prefix : undefined,
+                identifierType: identifier.identifierType,
                 preferred: identifier.preferred,
                 voided: identifier.voided
             };
@@ -45,7 +45,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     causeOfDeath: patient.causeOfDeath ? patient.causeOfDeath.uuid : '',
                     uuid: patient.uuid
                 },
-                identifiers: identifiers,
+                identifiers: [{"identifier": "", "identifierType": "Patient_Identifier", "preferred": true, "voided": false }],
                 uuid: patient.uuid
             }
         };

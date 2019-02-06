@@ -109,7 +109,8 @@ angular.module('authentication')
                             var locationInfo = data.locations[0];
                             if (locationInfo != undefined) {
                                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: locationInfo.display, uuid: locationInfo.uuid}, {path: '/', expires: 7});
+                                // $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: locationInfo.display, uuid: locationInfo.uuid}, {path: '/', expires: 7});
+                                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: "Ganiyari", uuid: "c1e42932-3f10-11e4-adec-0800271c1b75"}, {path: '/', expires: 7});
                             }
                         });
                     });
