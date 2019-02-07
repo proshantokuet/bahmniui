@@ -79,6 +79,14 @@ angular.module('bahmni.common.domain')
                     withCredentials: true
                 });
             };
+            this.createPatient = function (patient) {
+                var url = Bahmni.Common.Constants.hostURL + "/openmrs/ws/rest/v1/bahmnicore/patientprofile";
+                console.log(url);
+                return $http.post(url, patient, {
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
             this.updatePatient = function (patient, uuid) {
                 var patientUrl = Bahmni.Common.Constants.PatientUrl + "/" + uuid;
                 return $http.post(patientUrl, patient, {

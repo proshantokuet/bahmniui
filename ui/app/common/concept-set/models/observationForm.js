@@ -69,18 +69,18 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             maritalStatus = context.patient.MaritalStatus.value.uuid;
         }
         // for 44
-        var married = 'ab15e564-3109-4993-9631-5f185933f0fd';
-        var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
-        var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484';
-
-       /* var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
+       /* var married = 'ab15e564-3109-4993-9631-5f185933f0fd';
         var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
         var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484'; */
+
+        var married = 'ea6ad667-d1d8-409d-abbb-0ddbcb46bee1';
+        var antenatal = '4ff3c186-047d-42f3-aa6f-d79c969834ec';
+        var postnatal = '898bd550-eb0f-4cc1-92c4-1e0c73453484';
         /* console.log(deliveryDayDifference);
         console.log(age);
         console.log(conceptSet); */
-        console.log(context.patient);
-        console.log(conceptSet);
+        // console.log(context.patient);
+        // console.log(conceptSet);
         var pregnancyStatus = "";
         if (typeof context.patient.PregnancyStatus !== "undefined") {
             pregnancyStatus = context.patient.PregnancyStatus.value.uuid;

@@ -53,4 +53,12 @@ angular.module('bahmni.common.patient')
                 withCredentials: true
             });
         };
+        this.getHealthId = function () {
+            var url = Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/healthid/reserved/singleid";
+            var config = {
+                method: "GET",
+                withCredentials: false
+            };
+            return $http.get(url, config);
+        };
     }]);

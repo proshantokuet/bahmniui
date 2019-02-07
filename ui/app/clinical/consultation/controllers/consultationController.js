@@ -4,16 +4,17 @@ angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', '$translate', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
-        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService',
+        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'patientService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService) {
+                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, patientService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
             $scope.showDashboardMenu = false;
+            $scope.childRelationships = "";
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
@@ -152,6 +153,23 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('adtNavigationConfig');
                 Object.assign($scope.adtNavigationConfig, adtNavigationConfig);
                 setCurrentBoardBasedOnPath();
+                var relationships = [];
+                var houswholdRelationship = {};
+                var motherRelationship = {};
+                patientService.getRelationships($scope.patient.uuid).then(function (response) {
+                    $scope.relationships = response;
+                    _.each(response.data.results, function (relationship) {
+                        if (relationship.relationshipType.uuid == "03ed3084-4c7a-11e5-9192-080027b662ec") {
+                            houswholdRelationship["relationshipType"] = { "uuid": "03ed3084-4c7a-11e5-9192-080027b662ec" };
+                            houswholdRelationship["personB"] = { "display": relationship.personB.display, "uuid": relationship.personB.uuid };
+                            relationships.push(houswholdRelationship);
+                            motherRelationship["relationshipType"] = { "uuid": "03ed79c5-4c7a-11e5-9192-080027b662ec" };
+                            motherRelationship["personB"] = { "display": $scope.patient.name, "uuid": $scope.patient.uuid };
+                            relationships.push(motherRelationship);
+                            $scope.childRelationships = relationships;
+                        }
+                    });
+                });
             };
 
             $scope.shouldDisplaySaveConfirmDialogForStateChange = function (toState, toParams, fromState, fromParams) {
@@ -435,6 +453,68 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $scope.dashboardDirty = true;
             };
 
+            var createChild = function (groupMembers, birthDate) {
+                var genderConceptId = "581ed5fd-bfcd-4852-a8cf-373e54d9b815";
+                var nameConceptId = "627aefb4-8de5-4259-94d4-855acf0c3a63";
+                var birthWeightConceptId = "d56380f3-c513-47eb-9f02-44ef55c20f28";
+                var name = "";
+                var gender = "";
+                var birhtWeight = "";
+                var sex = "";
+                _.each(groupMembers, function (groupMember) {
+                    var conceptUuid = groupMember.concept.uuid;
+                    if (conceptUuid == genderConceptId) {
+                        gender = groupMember.value.name.name;
+                    } else if (conceptUuid == nameConceptId) {
+                        name = groupMember.value;
+                    } else if (conceptUuid == birthWeightConceptId) {
+                        birhtWeight = groupMember.value;
+                    } else {
+
+                    }
+                });
+                patientService.getHealthId().then(function (response) {
+                    console.log("hh::");
+                    console.log(response);
+                    if (gender == "Male") {
+                        sex = "M";
+                    } else {
+                        sex = "F";
+                    }
+                    createChildPatient(name, name, sex, birthDate, response.data.identifiers);
+                });
+            };
+            var getBirthdate = function (birthdate) {
+                var mnt;
+                if (birthdate) {
+                    mnt = moment(birthdate);
+                }
+                return mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+            };
+            var createChildPatient = function (fn, ln, gender, birthDate, healthId) {
+                var openMRSPatient = {
+                    patient: {
+                        person: {
+                            names: [
+                                {
+                                    givenName: fn,
+                                    middleName: "fn",
+                                    familyName: "fff"
+                                }
+                            ],
+                            addresses: [$scope.patient.address],
+                            birthdate: birthDate,
+                            gender: gender
+                        },
+                        identifiers: [{"identifier": healthId, "identifierType": "81433852-3f10-11e4-adec-0800271c1b75", "preferred": true, "voided": false }]
+                    }
+                };
+                openMRSPatient.relationships = $scope.childRelationships;
+                console.log("Patient:");
+                console.log(openMRSPatient);
+                encounterService.createPatient(openMRSPatient);
+            };
+
             $scope.save = function (toStateConfig) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
@@ -445,11 +525,13 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     encounterData.encounterTypeUuid = results[1].uuid;
                     var params = angular.copy($state.params);
                     params.cachebuster = Math.random();
-                    console.log("encounterData");
-                    console.log(encounterData);
+                    // console.log("encounterData");
+                    // console.log(encounterData);
                     var attributes = [];
                     var formName = "";
-                    console.log(encounterData.observations);
+                    var childs = [];
+                    var birthDate = "";
+                    // console.log(encounterData.observations);
                     _.each(encounterData.observations, function (observation) {
                         var formFieldPath = observation.formFieldPath;
                         var splitFormName = formFieldPath.split(".");
@@ -459,23 +541,30 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             var conceptUuid = observation.concept.uuid;
                             var attributeType = "";
                             // for 44
-                            var pregnancyStatusConceptUuid = "e3162bc6-7c67-4620-af44-6d66d6ff664f";
+                            /* var pregnancyStatusConceptUuid = "e3162bc6-7c67-4620-af44-6d66d6ff664f";
                             var pregnancyStatusAttributeUuid = "44a5a1e0-fa14-4119-a08b-b7ce38e751e1";
                             var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
                             var lmpAttributeUuid = "f4732414-9db7-48ca-a806-7b806b59569c";
                             var deliveryDateConceptUuid = "aaae5d8c-da92-49a2-914e-63d029b3501f";
                             var deliveryDateTimeConceptUuid = "7150e240-d92d-4f72-9262-ef32d62952c5";
-                            var deliveryDateAttributeUuid = "f8a74ac8-dd11-45cd-a867-58a40b071e7e";
+                            var deliveryDateAttributeUuid = "f8a74ac8-dd11-45cd-a867-58a40b071e7e"; */
 
-                            /* var pregnancyStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
+                            var pregnancyStatusConceptUuid = "58fa4284-a100-450e-91b6-e302032f6bf6";
                             var pregnancyStatusAttributeUuid = "40715084-f03a-4cff-836a-52736fbdc1ff";
                             var lmpConceptUuid = "c45a7e4b-3f10-11e4-adec-0800271c1b75";
                             var lmpAttributeUuid = "260a8a1a-42d1-4d10-805a-3c9750afbd7d";
                             var deliveryDateConceptUuid = "7d5d7073-da00-4a07-8f34-ae299c2c9cb4";
                             var deliveryDateTimeConceptUuid = "7150e240-d92d-4f72-9262-ef32d62952c5";
-                            var deliveryDateAttributeUuid = "443763d6-9c53-463b-9b82-518a05c73958"; */
+                            var deliveryDateAttributeUuid = "443763d6-9c53-463b-9b82-518a05c73958";
+                            var deliveryDetailConceptId = "41299bce-f9b7-4ac1-99e8-061846546a5d";
+                            var birthDateConceptId = "7150e240-d92d-4f72-9262-ef32d62952c5";
                             var value = "";
-                            console.log(conceptUuid);
+                            if (conceptUuid == deliveryDetailConceptId) {
+                                childs.push(observation.groupMembers);
+                            }
+                            if (conceptUuid == birthDateConceptId) {
+                                birthDate = observation.value.substr(0, 10);
+                            }
                             if (conceptUuid == pregnancyStatusConceptUuid) {
                                 attributeType = pregnancyStatusAttributeUuid;
                                 value = observation.value.uuid;
@@ -515,15 +604,15 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             attributes: attributes
                         }
                     };
-                    console.log(patientInfo);
                     console.log($scope.patient);
-                    console.log(formName);
-                    console.log(attributes.length);
+                    _.each(childs, function (child) {
+                        createChild(child, birthDate);
+                    });
                     if (attributes.length != 0) {
-                        encounterService.updatePatient(patientInfo, $scope.patient.uuid);
+                       // encounterService.updatePatient(patientInfo, $scope.patient.uuid);
                     }
-
-                    return encounterService.create(encounterData)
+                    // encounterData
+                    return encounterService.create(null)
                         .then(function (saveResponse) {
                             var messageParams = {encounterUuid: saveResponse.data.encounterUuid, encounterType: saveResponse.data.encounterType};
                             auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");

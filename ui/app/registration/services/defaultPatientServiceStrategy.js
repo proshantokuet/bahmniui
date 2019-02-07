@@ -4,7 +4,6 @@ angular.module('bahmni.registration')
     .service('patientServiceStrategy', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var openmrSRPURL = Bahmni.Registration.Constants.opensrpUrl;
         var search = function (config) {
             var defer = $q.defer();
             var patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
