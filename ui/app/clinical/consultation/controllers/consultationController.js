@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationController',
-    ['$scope', '$rootScope', '$state', '$location', '$translate', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
+    ['$scope', '$rootScope', '$state', '$location', '$translate', '$bahmniCookieStore', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'patientService',
-        function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
+        function ($scope, $rootScope, $state, $location, $translate, $bahmniCookieStore, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, patientService) {
@@ -15,6 +15,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.patient = patientContext.patient;
             $scope.showDashboardMenu = false;
             $scope.childRelationships = "";
+            $scope.cookieHealthId = new Set();
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
@@ -453,10 +454,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $scope.dashboardDirty = true;
             };
 
-            var createChild = function (groupMembers, birthDate) {
+            var createChild = function (groupMembers, birthDate, i) {
                 var genderConceptId = "581ed5fd-bfcd-4852-a8cf-373e54d9b815";
                 var nameConceptId = "627aefb4-8de5-4259-94d4-855acf0c3a63";
                 var birthWeightConceptId = "d56380f3-c513-47eb-9f02-44ef55c20f28";
+                var healthIdConceptId = "ef59006e-cfb7-414c-9890-6055106dba91";
                 var name = "";
                 var gender = "";
                 var birhtWeight = "";
@@ -470,26 +472,25 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     } else if (conceptUuid == birthWeightConceptId) {
                         birhtWeight = groupMember.value;
                     } else {
-
                     }
                 });
+                console.log(groupMembers);
+                // var set = new Set();
+                // set = $bahmniCookieStore.get($scope.patient.uuid);
+                // console.log(set);
+                // console.log("Health:" + set.values().next(i).value);
                 patientService.getHealthId().then(function (response) {
-                    console.log("hh::");
-                    console.log(response);
                     if (gender == "Male") {
                         sex = "M";
                     } else {
                         sex = "F";
                     }
+                    groupMembers.push(createGroupMember(response.data.identifiers));
+                    // $scope.cookieHealthId.add(response.data.identifiers);
+                    // $bahmniCookieStore.put($scope.patient.uuid, $scope.cookieHealthId);
                     createChildPatient(name, name, sex, birthDate, response.data.identifiers);
                 });
-            };
-            var getBirthdate = function (birthdate) {
-                var mnt;
-                if (birthdate) {
-                    mnt = moment(birthdate);
-                }
-                return mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+                return groupMembers;
             };
             var createChildPatient = function (fn, ln, gender, birthDate, healthId) {
                 var openMRSPatient = {
@@ -512,9 +513,25 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 openMRSPatient.relationships = $scope.childRelationships;
                 console.log("Patient:");
                 console.log(openMRSPatient);
-                encounterService.createPatient(openMRSPatient);
+                // encounterService.createPatient(openMRSPatient);
             };
+            var createGroupMember = function (healthId) {
+                var groupMember = {};
+                var concept = {};
+                concept.name = "healthId";
+                concept.uuid = "ef59006e-cfb7-414c-9890-6055106dba91";
+                concept.datatype = undefined;
+                // concept.conceptClass = "Misc";
+                groupMember.concept = concept;
+                groupMember.value = healthId;
+                groupMember.formNamespace = "Bahmni";
+                groupMember.formFieldPath = "ডেলিভারি সেবা.2/19-0";
+                groupMember.voided = false;
+                groupMember.inactive = false;
 
+                groupMember.groupMembers = [];
+                return groupMember;
+            };
             $scope.save = function (toStateConfig) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
@@ -532,6 +549,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var childs = [];
                     var birthDate = "";
                     // console.log(encounterData.observations);
+                    console.log("Enc:");
+                    console.log(encounterData);
                     _.each(encounterData.observations, function (observation) {
                         var formFieldPath = observation.formFieldPath;
                         var splitFormName = formFieldPath.split(".");
@@ -604,15 +623,29 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             attributes: attributes
                         }
                     };
-                    console.log($scope.patient);
+                    // console.log($scope.patient);
+                    var i = 0;
                     _.each(childs, function (child) {
-                        createChild(child, birthDate);
+                        console.log("ch");
+                        console.log(child);
+                        var j = 0;
+                        _.each(encounterData.observations, function (observation) {
+                            var conceptUuid = observation.concept.uuid;
+                            if (conceptUuid == "7150e240-d92d-4f72-9262-ef32d62952c5") {
+                                // childs.push(observation.groupMembers);
+                                var gms = createChild(child, birthDate, i);
+                                encounterData.observations[j].groupMembers = gms;
+                            }
+                            j++;
+                        });
+                        i++;
                     });
                     if (attributes.length != 0) {
                        // encounterService.updatePatient(patientInfo, $scope.patient.uuid);
                     }
                     // encounterData
-                    return encounterService.create(null)
+                    console.log(encounterData);
+                    return encounterService.create(encounterData)
                         .then(function (saveResponse) {
                             var messageParams = {encounterUuid: saveResponse.data.encounterUuid, encounterType: saveResponse.data.encounterType};
                             auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
